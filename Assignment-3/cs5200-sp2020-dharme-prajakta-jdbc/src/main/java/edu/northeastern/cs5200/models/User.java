@@ -8,14 +8,14 @@ public class User extends Person{
     public User(int id, Boolean user_agreement, Person person) {
         this.id = id;
         this.user_agreement = user_agreement;
-        this.person = person; //use?
+        this.person = person;
     }
 
     public User(int id, String first_name, String last_name, Boolean user_agreement, Person person) {
         super(id, first_name, last_name);
         this.id = id;
         this.user_agreement = user_agreement;
-        this.person = person; //use?
+        this.person = person;
     }
 
     public User() {

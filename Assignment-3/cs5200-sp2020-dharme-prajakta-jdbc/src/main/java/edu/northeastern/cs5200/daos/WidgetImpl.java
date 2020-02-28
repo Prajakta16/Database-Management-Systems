@@ -193,6 +193,7 @@ public class WidgetImpl implements WidgetDao {
                 order_diff = newOrder - widget.getWidget_order();
             else
                 order_diff = newOrder + total_widgets - widget.getWidget_order();
+            System.out.println(order_diff);
 
             pstatement = conn.prepareStatement(UPDATE_WIDGET_ORDER);
             pstatement.setInt(1,newOrder);
@@ -203,7 +204,7 @@ public class WidgetImpl implements WidgetDao {
                 System.out.println("Widget order for "+widget.getName()+" updated to "+newOrder);
 
             for(Widget w:widgetListToOrder){
-                if(w.getWidget_order()!=newOrder){
+                if(w.getId()!=widget.getId()){
                     pstatement = conn.prepareStatement(UPDATE_WIDGET_ORDER);
                     pstatement.setInt(1,(w.getWidget_order()+order_diff)% total_widgets);
                     pstatement.setInt(2,w.getId());
