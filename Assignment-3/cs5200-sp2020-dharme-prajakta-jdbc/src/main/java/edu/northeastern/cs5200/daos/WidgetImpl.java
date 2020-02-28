@@ -6,10 +6,7 @@ import edu.northeastern.cs5200.models.Type;
 import edu.northeastern.cs5200.models.Website;
 import edu.northeastern.cs5200.models.Widget;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -28,6 +25,8 @@ public class WidgetImpl implements WidgetDao {
     int query_status;
 
     public static String INSERT_INTO_WIDGET = "INSERT INTO widget(id,name,text,type,pageid,url,widget_order,width,height) VALUES (?,?,?,?,?,?,?,?,?)";
+    public static String INSERT_QUESTION_INTO_WIDGET = "INSERT INTO widget(name,text,type,posted_on,asked_by,length,views,endorsed_by_instructor,module,pageid,id) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    public static String INSERT_ANSWER_INTO_WIDGET = "INSERT INTO widget(name,text,type,posted_on,posted_by,correct_answer,up_votes,down_votes,question_widget_id) VALUES (?,?,?,?,?,?,?,?,?)";
     public static String FIND_ALL_WIDGETS= "SELECT * FROM widget";
     public static String FIND_WIDGET_BY_ID = "SELECT * FROM widget WHERE id=?";
     public static String FIND_WIDGET_BY_PAGE = "SELECT * FROM widget WHERE pageid=?";
@@ -48,23 +47,53 @@ public class WidgetImpl implements WidgetDao {
     public void createWidgetForPage(int pageId, Widget widget) {
         try {
             conn = Connection.getConnection();
-            pstatement = conn.prepareStatement(INSERT_INTO_WIDGET);
-            String type = widget.getType().name();
-            pstatement.setInt(1,widget.getId());
-            pstatement.setString(2,widget.getName());
-            pstatement.setString(3,widget.getText());
-            pstatement.setString(4,type);
-            pstatement.setInt(5,pageId);
-            pstatement.setString(6,widget.getUrl());
-            pstatement.setInt(7,widget.getWidget_order());
-            pstatement.setInt(8,widget.getWidth());
-            pstatement.setInt(9,widget.getHeight());
-            query_status = pstatement.executeUpdate();
-            if(query_status==1)
-                System.out.println("Widget "+widget.getName()+" inserted successfully");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            if(widget.getType() == Type.question){
+                pstatement = conn.prepareStatement(INSERT_QUESTION_INTO_WIDGET);
+                pstatement.setString(1, widget.getName());
+                pstatement.setString(2, widget.getText());
+                pstatement.setString(3, widget.getType().name());
+                pstatement.setDate(4, widget.getPosted_on());
+                pstatement.setInt(5, widget.getAsked_by());
+                pstatement.setInt(6, widget.getLength());
+                pstatement.setInt(7, widget.getViews());
+                pstatement.setBoolean(8, widget.isEndorsed_by_instructor());
+                pstatement.setString(9, widget.getModule().name());
+                pstatement.setInt(10, pageId);
+                pstatement.setInt(11,widget.getId());
+                query_status = pstatement.executeUpdate();
+            }
+            else if (widget.getType() == Type.answer){
+                    pstatement=conn.prepareStatement(INSERT_ANSWER_INTO_WIDGET);
+                    pstatement.setString(1, widget.getName());
+                    pstatement.setString(2, widget.getText());
+                    pstatement.setString(3, widget.getType().name());
+                    pstatement.setDate(4, widget.getPosted_on());
+                    pstatement.setInt(5, widget.getPosted_by());
+                    pstatement.setBoolean(6, widget.isCorrect_answer());
+                    pstatement.setInt(7, widget.getUp_votes());
+                    pstatement.setInt(8, widget.getDown_votes());
+                    pstatement.setInt(9, widget.getQuestion_widget_id());
+                    query_status = pstatement.executeUpdate();
+            }
+            else {
+                pstatement = conn.prepareStatement(INSERT_INTO_WIDGET);
+                String type = widget.getType().name();
+                pstatement.setInt(1, widget.getId());
+                pstatement.setString(2, widget.getName());
+                pstatement.setString(3, widget.getText());
+                pstatement.setString(4, type);
+                pstatement.setInt(5, pageId);
+                pstatement.setString(6, widget.getUrl());
+                pstatement.setInt(7, widget.getWidget_order());
+                pstatement.setInt(8, widget.getWidth());
+                pstatement.setInt(9, widget.getHeight());
+                query_status = pstatement.executeUpdate();
+            }
+            if (query_status == 1)
+                System.out.println("Widget " + widget.getName() + " inserted successfully");
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -245,7 +274,10 @@ public class WidgetImpl implements WidgetDao {
     public int deleteLastWidgetInPage(Page page) {
         try {
             int max_order=0;
-            conn = Connection.getConnection();
+            if(conn==null){
+                conn = connection.getConnection();
+                System.out.println("Connection successful for creating developer");
+            }
 
             Collection<Widget> widgetListToDetermineMaxOrder = findWidgetsForPage(page.getId());
             for(Widget w: widgetListToDetermineMaxOrder)
@@ -266,5 +298,44 @@ public class WidgetImpl implements WidgetDao {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public void getUnansweredQuestions() {
+        try {
+            if(conn==null){
+                conn = connection.getConnection();
+                System.out.println("Connection successful for creating developer");
+            }
+            CallableStatement callableStatement = conn.prepareCall("CALL getUnansweredQuestions();");
+            rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                System.out.println("Question id "+rs.getInt("question_id")+
+                        " module "+rs.getString("module")+"" +
+                        " number of answers "+rs.getString("MAX(num_of_answers)"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void endorsedUsersForWeek(Date date1, Date date2) {
+        try {
+            if(conn==null){
+                conn = connection.getConnection();
+                System.out.println("Connection successful for creating developer");
+            }
+            pstatement = conn.prepareCall("CALL endorsedUsersForWeek(?,?);");
+            pstatement.setDate(1,date1);
+            pstatement.setDate(2,date2);
+            rs = pstatement.executeQuery();
+            while (rs.next()) {
+                System.out.println("First name "+rs.getString("first_name")+
+                        " number of answers "+rs.getInt("num_of_answers"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

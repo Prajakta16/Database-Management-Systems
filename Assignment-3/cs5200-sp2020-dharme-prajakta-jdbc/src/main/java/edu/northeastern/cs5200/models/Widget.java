@@ -2,6 +2,8 @@ package edu.northeastern.cs5200.models;
 
 import org.springframework.boot.context.event.SpringApplicationEvent;
 
+import java.sql.Date;
+
 public class Widget {
     private int id;
     private String name;
@@ -14,6 +16,19 @@ public class Widget {
     private Type type;
     private Page page;
 
+    private int posted_by; //User
+    private Date posted_on;
+    private boolean correct_answer;
+    private int up_votes;
+    private int down_votes;
+    private int question_widget_id;
+
+    private Module module;
+    private int asked_by;
+    private int length;
+    private int views;
+    private boolean endorsed_by_instructor;
+
     private int size;//heading
     private String html; //htlml
     private String src; //image
@@ -25,7 +40,121 @@ public class Widget {
 
     }
 
-    public Widget(int id, String name, int width, int height, String text, int widget_order,Type type, Page page, String url) {
+    public Widget(int id,String name, String text, Type type, Page page, Date posted_on, Module module, int asked_by, int length, int views, boolean endorsed_by_instructor) {
+        this.id=id;
+        this.name = name;
+        this.text = text;
+        this.type = type;
+        this.page = page;
+        this.posted_on = posted_on;
+        this.module = module;
+        this.asked_by = asked_by;
+        this.length = length;
+        this.views = views;
+        this.endorsed_by_instructor = endorsed_by_instructor;
+    }
+
+    public int getPosted_by() {
+        return posted_by;
+    }
+
+    public void setPosted_by(int posted_by) {
+        this.posted_by = posted_by;
+    }
+
+    public Date getPosted_on() {
+        return posted_on;
+    }
+
+    public void setPosted_on(Date posted_on) {
+        this.posted_on = posted_on;
+    }
+
+    public boolean isCorrect_answer() {
+        return correct_answer;
+    }
+
+    public void setCorrect_answer(boolean correct_answer) {
+        this.correct_answer = correct_answer;
+    }
+
+    public int getUp_votes() {
+        return up_votes;
+    }
+
+    public void setUp_votes(int up_votes) {
+        this.up_votes = up_votes;
+    }
+
+    public int getDown_votes() {
+        return down_votes;
+    }
+
+    public void setDown_votes(int down_votes) {
+        this.down_votes = down_votes;
+    }
+
+    public int getQuestion_widget_id() {
+        return question_widget_id;
+    }
+
+    public void setQuestion_widget_id(int question_widget_id) {
+        this.question_widget_id = question_widget_id;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
+    }
+
+    public int getAsked_by() {
+        return asked_by;
+    }
+
+    public void setAsked_by(int asked_by) {
+        this.asked_by = asked_by;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+
+    public boolean isEndorsed_by_instructor() {
+        return endorsed_by_instructor;
+    }
+
+    public void setEndorsed_by_instructor(boolean endorsed_by_instructor) {
+        this.endorsed_by_instructor = endorsed_by_instructor;
+    }
+
+    public Widget(String name, String text, Type type, int posted_by, Date posted_on, boolean correct_answer, int up_votes, int down_votes, int question_widget_id) {
+        this.name = name;
+        this.text = text;
+        this.type = type;
+        this.posted_by = posted_by;
+        this.posted_on = posted_on;
+        this.correct_answer = correct_answer;
+        this.up_votes = up_votes;
+        this.down_votes = down_votes;
+        this.question_widget_id = question_widget_id;
+    }
+
+    public Widget(int id, String name, int width, int height, String text, int widget_order, Type type, Page page, String url) {
         this.id = id;
         this.name = name;
         this.width = width;

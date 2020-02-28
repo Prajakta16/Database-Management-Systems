@@ -4,7 +4,9 @@ public enum Type {
     heading(1,"heading"),
     html(2,"html"),
     youTube(3,"youTube"),
-    image(4,"image");
+    image(4,"image"),
+    question(5,"question"),
+    answer(6,"answer");
 
     private final int id;
     private final String type;

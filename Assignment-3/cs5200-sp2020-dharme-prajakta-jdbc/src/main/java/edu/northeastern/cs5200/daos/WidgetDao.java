@@ -2,6 +2,8 @@ package edu.northeastern.cs5200.daos;
 
 import edu.northeastern.cs5200.models.Page;
 import edu.northeastern.cs5200.models.Widget;
+
+import java.sql.Date;
 import java.util.Collection;
 
 public interface WidgetDao {
@@ -20,4 +22,8 @@ public interface WidgetDao {
     int deleteWidget(int widgetId);
 
     int deleteLastWidgetInPage(Page page);
+
+    void getUnansweredQuestions();
+
+    void endorsedUsersForWeek(Date date1, Date date2);
 }

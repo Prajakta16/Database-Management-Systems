@@ -3,6 +3,8 @@ package edu.northeastern.cs5200;
 import edu.northeastern.cs5200.Connection;
 import edu.northeastern.cs5200.daos.*;
 import edu.northeastern.cs5200.models.*;
+import edu.northeastern.cs5200.models.Module;
+
 import java.text.ParseException;
 
 import java.sql.Date;
@@ -35,7 +37,8 @@ class main {
         java.util.Date currentDate = calendar.getTime(); // this java date will represent the current date, or "now".
         java.sql.Date date = new java.sql.Date(currentDate.getTime());
         java.sql.Date date2 = Date.valueOf("2020-01-06");
-        java.sql.Date date3 = Date.valueOf("2020-02-27");
+        java.sql.Date date3 = Date.valueOf("2020-02-25");
+        java.sql.Date date4 = Date.valueOf("2020-02-28");
 
 
         Person personAlice = new Person(12,"Alice","Wonder","alice","alice","alice@wonder.com");
@@ -125,6 +128,12 @@ class main {
         Widget widgetImage345 = new Widget(5, "image345",0,0,null,3,Type.image,pageContact,"/img/567.png");
         Widget widgetVideo456 = new Widget(6, "video456",0,0,null,0,Type.youTube,pagePreferences,"https://youtu.be/h67VX51QXiQ");
 
+        Widget widgetQ1 = new Widget(101,"Q1","How are you?",Type.question,pageProfile,date3,Module.Exam,userDan.getId(),10,100,true);
+        Widget widgetQ2 = new Widget(102,"Q2","Doubt in assignmnet?",Type.question,pageProfile,date3,Module.Exam,userDan.getId(),10,100,false);
+        Widget widgetQ3 = new Widget(103,"Q3","zys",Type.question,pageProfile,date3,Module.Assignment2,userTim.getId(),10,100,true);
+        Widget widgetQ4 = new Widget(104,"Q4","ggg",Type.question,pageProfile,date3,Module.Assignment2,userDan.getId(),10,100,true);
+        Widget widgetQ5 = new Widget(105,"Q5","hhh",Type.question,pageProfile,date3,Module.Assignment2,userTim.getId(),10,100,true);
+
         System.out.println("---------------------------Inserting widgets--------------------------------");
         widgetImpl.createWidgetForPage(pageHome.getId(),widgetHead123);
         widgetImpl.createWidgetForPage(pageAbout.getId(),widgetpost234);
@@ -132,6 +141,33 @@ class main {
         widgetImpl.createWidgetForPage(pageContact.getId(),widgetIntro456);
         widgetImpl.createWidgetForPage(pageContact.getId(),widgetImage345);
         widgetImpl.createWidgetForPage(pagePreferences.getId(),widgetVideo456);
+
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetQ1);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetQ2);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetQ3);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetQ4);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetQ5);
+
+        Widget widgetA1 = new Widget("A1","amswer1",Type.answer,userEd.getId(),date4,false,4,1,widgetQ1.getId());
+        Widget widgetA2 = new Widget("A2","amswer2",Type.answer,userEd.getId(),date4,true,4,1,widgetQ1.getId());
+        Widget widgetA3 = new Widget("A3","amswer3",Type.answer,userFeb.getId(),date4,true,4,1,widgetQ1.getId());
+        Widget widgetA4 = new Widget("A4","amswer4",Type.answer,userFeb.getId(),date4,true,4,1,widgetQ2.getId());
+        Widget widgetA5 = new Widget("A5","amswer5",Type.answer,userFeb.getId(),date4,true,4,1,widgetQ2.getId());
+        Widget widgetA6 = new Widget("A6","amswer6",Type.answer,userTom.getId(),date4,false,4,1,widgetQ3.getId());
+        Widget widgetA7 = new Widget("A7","amswer7",Type.answer,userTom.getId(),date4,false,4,1,widgetQ3.getId());
+        Widget widgetA8 = new Widget("A8","amswer8",Type.answer,userTim.getId(),date,true,4,1,widgetQ4.getId());
+
+
+
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA1);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA2);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA3);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA4);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA5);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA6);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA7);
+        widgetImpl.createWidgetForPage(pageProfile.getId(),widgetA8);
+
 
 
         System.out.println("-------------------Assigning website role--------------------------");
@@ -172,7 +208,7 @@ class main {
         roleImpl.assignPageRole(devCharles.getId(),pageProfile.getId(),role.getIdByRole("reviewer"));
         roleImpl.assignPageRole(devAlice.getId(),pageProfile.getId(),role.getIdByRole("writer"));
 
-
+/*
         System.out.println("-----------------------------Update queries----------------------------------");
         //Update developer - Update Charlie's primary phone number to 333-444-5555
         Phone phoneCharlesUpdate = new Phone(3,"333-444-5555",true,personCharles);
@@ -206,6 +242,10 @@ class main {
         websiteImpl.deleteWebsite(websiteCNET.getId());
         //cascade delete during table creation will automatically delete all related roles and privileges of website and page
 
+*/
+        System.out.println("-----------------------------Execute procedures----------------------------------");
+        widgetImpl.getUnansweredQuestions();
+        widgetImpl.endorsedUsersForWeek(date3,date4);
 
         if(conn!=null){
             conn=null;
