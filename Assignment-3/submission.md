@@ -11,7 +11,9 @@ Link has create.sql, triggers.sql, stored procedures as well as code.
 Execute 
 1. create.sql
 2. triggers.sql
-3. Run the program
+3. getUnansweredQuestions.sql
+4. endorsedUsersForWeek.sql
+3. Run the program - insert the data and execute update, delete and procedures
 
 Note: 
 I have renamed few fields as they werent working with my version of mySql

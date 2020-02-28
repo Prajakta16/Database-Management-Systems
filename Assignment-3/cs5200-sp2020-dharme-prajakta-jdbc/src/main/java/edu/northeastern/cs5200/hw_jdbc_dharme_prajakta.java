@@ -208,7 +208,7 @@ class main {
         roleImpl.assignPageRole(devCharles.getId(),pageProfile.getId(),role.getIdByRole("reviewer"));
         roleImpl.assignPageRole(devAlice.getId(),pageProfile.getId(),role.getIdByRole("writer"));
 
-/*
+
         System.out.println("-----------------------------Update queries----------------------------------");
         //Update developer - Update Charlie's primary phone number to 333-444-5555
         Phone phoneCharlesUpdate = new Phone(3,"333-444-5555",true,personCharles);
@@ -242,7 +242,7 @@ class main {
         websiteImpl.deleteWebsite(websiteCNET.getId());
         //cascade delete during table creation will automatically delete all related roles and privileges of website and page
 
-*/
+
         System.out.println("-----------------------------Execute procedures----------------------------------");
         widgetImpl.getUnansweredQuestions();
         widgetImpl.endorsedUsersForWeek(date3,date4);
