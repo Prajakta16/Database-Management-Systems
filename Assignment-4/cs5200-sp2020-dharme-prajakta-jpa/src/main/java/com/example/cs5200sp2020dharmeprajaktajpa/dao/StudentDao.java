@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class StudentDao {
     @Autowired
     StudentRepository studentRepository;
@@ -23,20 +24,19 @@ public class StudentDao {
         return (List<Student>) studentRepository.findAll();
     }
 
-    public List<Section> findSectionsForStudent(Student student) {
-        List<Enrollment> enrollments = new ArrayList<Enrollment>();
-        List<Section> sections = new ArrayList<>();
 
-        if (studentRepository.existsById(student.getId())) {
-            //if the student exists
-            enrollments = student.getEnrollments();
-            for (Enrollment e : enrollments)
-            {
-                sections.add(e.getSection());
-            }
-            return sections;
+    public List<Section> findSectionsForStudent(Student student) {
+        List<Section> sections = new ArrayList<>();
+        List<Enrollment> enrollments = new ArrayList<Enrollment>();
+        enrollments = studentRepository.findEnrollmentsForStudent(student);
+
+        for (Enrollment e : enrollments)
+        {
+            sections.add(e.getSection());
         }
-        return null;
+        for (Section s : sections)
+            System.out.println(s.getTitle());
+        return sections;
     }
 
     public Student findStudentByUsername(String username){

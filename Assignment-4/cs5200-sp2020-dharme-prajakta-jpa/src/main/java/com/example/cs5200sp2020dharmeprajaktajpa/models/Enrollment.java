@@ -1,5 +1,7 @@
 package com.example.cs5200sp2020dharmeprajaktajpa.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity(name="enrollment")
@@ -11,6 +13,7 @@ public class Enrollment {
     private String feedback;
 
     @ManyToOne
+    @JsonIgnore
     private Student student;
 
     @ManyToOne

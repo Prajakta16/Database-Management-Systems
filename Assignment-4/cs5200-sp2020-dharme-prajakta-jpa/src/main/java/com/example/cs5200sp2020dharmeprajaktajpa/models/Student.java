@@ -1,5 +1,7 @@
 package com.example.cs5200sp2020dharmeprajaktajpa.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 

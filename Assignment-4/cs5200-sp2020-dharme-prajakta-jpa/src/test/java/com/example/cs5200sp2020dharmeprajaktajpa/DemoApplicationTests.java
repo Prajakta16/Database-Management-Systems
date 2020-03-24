@@ -2,10 +2,14 @@ package com.example.cs5200sp2020dharmeprajaktajpa;
 
 import com.example.cs5200sp2020dharmeprajaktajpa.dao.*;
 import com.example.cs5200sp2020dharmeprajaktajpa.models.*;
+import com.example.cs5200sp2020dharmeprajaktajpa.repositories.StudentRepository;
 import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +96,6 @@ class DemoApplicationTests {
         enrollmentDao.enrollStudentInSection(studentAlice, section5432);
         enrollmentDao.enrollStudentInSection(studentBob, section5432);
         enrollmentDao.enrollStudentInSection(studentCharlie, section6543);
-
     }
 
     @Test
